@@ -696,84 +696,144 @@
             $(function(){
                 //Group 1
                 $.get("/getCluster0", function(result){
+                    // Get random index from 0 to number of films in cluster - 1
+                    film_1 = Math.floor(Math.random() * result.length);
+                    film_2 = Math.floor(Math.random() * result.length);
+                    // Ensure film 1 index not same as film 2
+                    while (film_1 === film_2) {
+                        film_2 = Math.floor(Math.random() * result.length);
+                    }
+                    film_3 = Math.floor(Math.random() * result.length);
+                    // Ensure all films not same index
+                    while(film_1 === film_3 || film_2 === film_3) {
+                        film_3 = Math.floor(Math.random() * result.length);
+                    }
                     //Group 1, Movie 1
-                    $('#g1m1Title').html(result[0]["title"]);
-                    $('#g1m1Runtime').html( 'Runtime '+ result[0]["runtime"]+' mins');
-                    $('#g1m1Description').html(result[0]["description"]);
+                    $('#g1m1Title').html(result[film_1]["title"]);
+                    $('#g1m1Runtime').html( 'Runtime '+ result[film_1]["runtime"]+' mins');
+                    $('#g1m1Description').html(result[film_1]["description"]);
                     //Group 1, Movie 2
-                    $('#g1m2Title').html(result[1]["title"]);
-                    $('#g1m2Runtime').html( 'Runtime '+ result[1]["runtime"]+' mins');
-                    $('#g1m2Description').html(result[1]["description"]);
+                    $('#g1m2Title').html(result[film_2]["title"]);
+                    $('#g1m2Runtime').html( 'Runtime '+ result[film_2]["runtime"]+' mins');
+                    $('#g1m2Description').html(result[film_2]["description"]);
                     //Group 1, Movie 3
-                    $('#g1m3Title').html(result[2]["title"]);
-                    $('#g1m3Runtime').html( 'Runtime '+ result[2]["runtime"]+' mins');
-                    $('#g1m3Description').html(result[2]["description"]);
+                    $('#g1m3Title').html(result[film_3]["title"]);
+                    $('#g1m3Runtime').html( 'Runtime '+ result[film_3]["runtime"]+' mins');
+                    $('#g1m3Description').html(result[film_3]["description"]);
                 });
 
                 //Group 2
                 $.get("/getCluster1", function(result){
+                    // Get random index from 0 to number of films in cluster - 1
+                    film_1 = Math.floor(Math.random() * result.length);
+                    film_2 = Math.floor(Math.random() * result.length);
+                    // Ensure film 1 index not same as film 2
+                    while (film_1 === film_2) {
+                        film_2 = Math.floor(Math.random() * result.length);
+                    }
+                    film_3 = Math.floor(Math.random() * result.length);
+                    // Ensure all films not same index
+                    while(film_1 === film_3 || film_2 === film_3) {
+                        film_3 = Math.floor(Math.random() * result.length);
+                    }
                     //Group 2, Movie 1
-                    $('#g2m1Title').html(result[0]["title"]);
-                    $('#g2m1Runtime').html( 'Runtime '+ result[0]["runtime"]+' mins');
-                    $('#g2m1Description').html(result[0]["description"]);
+                    $('#g2m1Title').html(result[film_1]["title"]);
+                    $('#g2m1Runtime').html( 'Runtime '+ result[film_1]["runtime"]+' mins');
+                    $('#g2m1Description').html(result[film_1]["description"]);
                     //Group 2, Movie 2
-                    $('#g2m2Title').html(result[1]["title"]);
-                    $('#g2m2Runtime').html( 'Runtime '+ result[1]["runtime"]+' mins');
-                    $('#g2m2Description').html(result[1]["description"]);
+                    $('#g2m2Title').html(result[film_2]["title"]);
+                    $('#g2m2Runtime').html( 'Runtime '+ result[film_2]["runtime"]+' mins');
+                    $('#g2m2Description').html(result[film_2]["description"]);
                     //Group 2, Movie 3
-                    $('#g2m3Title').html(result[2]["title"]);
-                    $('#g2m3Runtime').html( 'Runtime '+ result[2]["runtime"]+' mins');
-                    $('#g2m3Description').html(result[2]["description"]);
+                    $('#g2m3Title').html(result[film_3]["title"]);
+                    $('#g2m3Runtime').html( 'Runtime '+ result[film_3]["runtime"]+' mins');
+                    $('#g2m3Description').html(result[film_3]["description"]);
                 });
 
                 //Group 3
                 $.get("/getCluster2", function(result){
+                    // Get random index from 0 to number of films in cluster - 1
+                    film_1 = Math.floor(Math.random() * result.length);
+                    film_2 = Math.floor(Math.random() * result.length);
+                    // Ensure film 1 index not same as film 2
+                    while (film_1 === film_2) {
+                        film_2 = Math.floor(Math.random() * result.length);
+                    }
+                    film_3 = Math.floor(Math.random() * result.length);
+                    // Ensure all films not same index
+                    while(film_1 === film_3 || film_2 === film_3) {
+                        film_3 = Math.floor(Math.random() * result.length);
+                    }
                     //Group 3, Movie 1
-                    $('#g3m1Title').html(result[0]["title"]);
-                    $('#g3m1Runtime').html( 'Runtime '+ result[0]["runtime"]+' mins');
-                    $('#g3m1Description').html(result[0]["description"]);
+                    $('#g3m1Title').html(result[film_1]["title"]);
+                    $('#g3m1Runtime').html( 'Runtime '+ result[film_1]["runtime"]+' mins');
+                    $('#g3m1Description').html(result[film_1]["description"]);
                     //Group 3, Movie 2
-                    $('#g3m2Title').html(result[1]["title"]);
-                    $('#g3m2Runtime').html( 'Runtime '+ result[1]["runtime"]+' mins');
-                    $('#g3m2Description').html(result[1]["description"]);
+                    $('#g3m2Title').html(result[film_2]["title"]);
+                    $('#g3m2Runtime').html( 'Runtime '+ result[film_2]["runtime"]+' mins');
+                    $('#g3m2Description').html(result[film_2]["description"]);
                     //Group 3, Movie 3
-                    $('#g3m3Title').html(result[2]["title"]);
-                    $('#g3m3Runtime').html( 'Runtime '+ result[2]["runtime"]+' mins');
-                    $('#g3m3Description').html(result[2]["description"]);
+                    $('#g3m3Title').html(result[film_3]["title"]);
+                    $('#g3m3Runtime').html( 'Runtime '+ result[film_3]["runtime"]+' mins');
+                    $('#g3m3Description').html(result[film_3]["description"]);
                 });
 
                 //Group 4
                 $.get("/getCluster3", function(result){
+                    // Get random index from 0 to number of films in cluster - 1
+                    film_1 = Math.floor(Math.random() * result.length);
+                    film_2 = Math.floor(Math.random() * result.length);
+                    // Ensure film 1 index not same as film 2
+                    while (film_1 === film_2) {
+                        film_2 = Math.floor(Math.random() * result.length);
+                    }
+                    film_3 = Math.floor(Math.random() * result.length);
+                    // Ensure all films not same index
+                    while(film_1 === film_3 || film_2 === film_3) {
+                        film_3 = Math.floor(Math.random() * result.length);
+                    }
                     //Group 4, Movie 1
-                    $('#g4m1Title').html(result[0]["title"]);
-                    $('#g4m1Runtime').html( 'Runtime '+ result[0]["runtime"]+' mins');
-                    $('#g4m1Description').html(result[0]["description"]);
+                    $('#g4m1Title').html(result[film_1]["title"]);
+                    $('#g4m1Runtime').html( 'Runtime '+ result[film_1]["runtime"]+' mins');
+                    $('#g4m1Description').html(result[film_1]["description"]);
                     //Group 4, Movie 2
-                    $('#g4m2Title').html(result[1]["title"]);
-                    $('#g4m2Runtime').html( 'Runtime '+ result[1]["runtime"]+' mins');
-                    $('#g4m2Description').html(result[1]["description"]);
+                    $('#g4m2Title').html(result[film_2]["title"]);
+                    $('#g4m2Runtime').html( 'Runtime '+ result[film_2]["runtime"]+' mins');
+                    $('#g4m2Description').html(result[film_2]["description"]);
                     //Group 4, Movie 3
-                    $('#g4m3Title').html(result[2]["title"]);
-                    $('#g4m3Runtime').html( 'Runtime '+ result[2]["runtime"]+' mins');
-                    $('#g4m3Description').html(result[2]["description"]);
+                    $('#g4m3Title').html(result[film_3]["title"]);
+                    $('#g4m3Runtime').html( 'Runtime '+ result[film_3]["runtime"]+' mins');
+                    $('#g4m3Description').html(result[film_3]["description"]);
                 });
 
                 //Group 5
                 $.get("/getCluster4", function(result){
+                    // Get random index from 0 to number of films in cluster - 1
+                    film_1 = Math.floor(Math.random() * result.length);
+                    film_2 = Math.floor(Math.random() * result.length);
+                    // Ensure film 1 index not same as film 2
+                    while (film_1 === film_2) {
+                        film_2 = Math.floor(Math.random() * result.length);
+                    }
+                    film_3 = Math.floor(Math.random() * result.length);
+                    // Ensure all films not same index
+                    while(film_1 === film_3 || film_2 === film_3) {
+                        film_3 = Math.floor(Math.random() * result.length);
+                    }
                     //Group 5, Movie 1
-                    $('#g5m1Title').html(result[0]["title"]);
-                    $('#g5m1Runtime').html( 'Runtime '+ result[0]["runtime"]+' mins');
-                    $('#g5m1Description').html(result[0]["description"]);
+                    $('#g5m1Title').html(result[film_1]["title"]);
+                    $('#g5m1Runtime').html( 'Runtime '+ result[film_1]["runtime"]+' mins');
+                    $('#g5m1Description').html(result[film_1]["description"]);
                     //Group 5, Movie 2
-                    $('#g5m2Title').html(result[1]["title"]);
-                    $('#g5m2Runtime').html( 'Runtime '+ result[1]["runtime"]+' mins');
-                    $('#g5m2Description').html(result[1]["description"]);
+                    $('#g5m2Title').html(result[film_2]["title"]);
+                    $('#g5m2Runtime').html( 'Runtime '+ result[film_2]["runtime"]+' mins');
+                    $('#g5m2Description').html(result[film_2]["description"]);
                     //Group 5, Movie 3
-                    $('#g5m3Title').html(result[2]["title"]);
-                    $('#g5m3Runtime').html( 'Runtime '+ result[2]["runtime"]+' mins');
-                    $('#g5m3Description').html(result[2]["description"]);
+                    $('#g5m3Title').html(result[film_3]["title"]);
+                    $('#g5m3Runtime').html( 'Runtime '+ result[film_3]["runtime"]+' mins');
+                    $('#g5m3Description').html(result[film_3]["description"]);
                 });
-            })
+            });
 
             //Change Colour of Stars for Movie 1
             $(function(){
@@ -1327,8 +1387,6 @@
                     }
                 });
             });
-
-
 
             //track user behaviour
             function track(id) {
