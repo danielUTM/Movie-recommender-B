@@ -1,7 +1,7 @@
 
 //Populates the movies
 $(function(){
-    var e = 0.3;
+    var e = 0.2;
     var randomGreedy = Math.random();
     $.get("/getRecommendations", function(result){
         var random = Math.floor(Math.random() * (6));
