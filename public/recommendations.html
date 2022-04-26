@@ -53,9 +53,9 @@
             <div class="container">
                 <h1>Movie Recommender</h1>
                 <p class="lead text-muted">
-                    Hello and welcome to this Movie Recommender! Below you will find a list of movies that have been recommended just for you, we hope you enjoy.  
+                    Hello and welcome to this Movie Recommender! Below you will find a list of movies that have been recommended just for you, we hope you enjoy.
                 </p>
-                <p class="lead text-muted">Click the 'See Explanation' button to see why this movie was recommended to you</p>
+                <p class="lead text-muted">Click the buttons on the webpage to interact!</p>
             </div>
 
         </section>
@@ -80,6 +80,8 @@
                     
                 </div>
             </div>
+            <button id="m1SeeMore" class="btn btn-success btn-yes-no" onclick="moreDesc(); track(this.id)">See more</button>
+        </br>
             <div>
                 <span class="align-text-top lead">Was this a <b>good</b> recommendation for you?</span>
                 <button id="m1YesRecommendation" class="btn btn-success btn-yes-no" onclick="track(this.id), sendRecommendationData(this.id)">Yes</button><button id="m1NoRecommendation" class="btn btn-danger btn-yes-no" onclick="track(this.id), sendRecommendationData(this.id)">No</button>
@@ -89,54 +91,6 @@
             <div id=m1Explanation class="explanation">
                 <image class="img-fluid" max-width="100%" height="auto" src="./images/Explanations/table.png"></image>
                 <image class="img-fluid" max-width="100%" height="auto" src="./images/Explanations/flowchart.png"></image>
-                <!-- 
-                <div class="row">
-                    <div class="col">
-                        <div class="row">
-                            <image id=m1Highest class="img-fluid" max-width="100%" height="auto"></image>
-                        </div>
-                        <div class="row">
-                            <p>Your Highest Rated</p>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <image class="img-fluid minus" src="./images/Explanations/minus.png"></image>
-                    </div>
-                    <div class="col">
-                        <div class="row">
-                            <image id=m1Lowest class="img-fluid" max-width="100%" height="auto"></image>
-                        </div>
-                        <div class="row">
-                            <p>Your Lowest Rated</p>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <image class="img-fluid plus" src="./images/Explanations/plus.png"></image>
-                    </div>
-                    <div class="col">
-                        <div class="row">
-                            <image id=m1GenderAndAge class="img-fluid gender" max-width="100%" height="auto"></image>
-                        </div>
-                        <div class="row">
-                            <p>Gender & Age</p>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <image class="img-fluid equals"  src="./images/Explanations/equals.png"></image>
-                    </div>
-                    <div class="col">
-                        <div class="row">
-                            <image id=m1ExplanationImage class="img-fluid" max-width="100%" height="auto"></image>
-                        </div>
-                        <div class="row">
-                            <p>Recommendation</p>
-                        </div>
-                    </div>
-                    <div class="col">
-                        
-                    </div>
-                </div>
-                -->
             </br>
                 <div>
                     <span class="align-text-top lead">Do you <b>trust</b> this recommendation?</span>
@@ -144,85 +98,11 @@
                 </div>
             </div>
         </br>
-            
         </br>
-            
-
-            <hr class="featurette-divider">
-
-            <!--Second Movie-->
-            <div class="row featurette">
-                <div class="col-md-5">
-                    <svg height="auto" class="float-right">
-                        <image id=m2Image class="img-fluid float-right" max-width="100%" height="auto"></image>
-                    </svg>
-                </div>
-                <div class="col-md-7">
-                    <h2 id=m2Title class="featurette-heading"></h2>
-                    <p id=m2Runtime class="lead"></p>
-                    <p id=m2Budget class="lead"></p>
-                    <p id=m2Revenue class="lead"></p>
-                    <p id=m2AvgVote class="lead"></p>
-                    <p id=m2VoteCount class="lead"></p>
-                    <p id=m2Description class="lead"></p>
-                </div>
-            </div>
-            <div>
-                <span class="align-text-top lead">Was this a <b>good</b> recommendation for you?</span>
-                <button id="m2YesRecommendation" class="btn btn-success btn-yes-no" onclick="track(this.id), sendRecommendationData(this.id)">Yes</button><button id="m2NoRecommendation" class="btn btn-danger btn-yes-no" onclick="track(this.id), sendRecommendationData(this.id)">No</button>
-            </div>
-            <button id=m2ExplanationBtn class="btn btn-secondary btn-explanations-odd" onclick="track(this.id)">See Explanation</button>
-            <div id=m2Explanation class="explanation">
-                <image class="img-fluid" max-width="100%" height="auto" src="./images/Explanations/table.png"></image>
-                <image class="img-fluid" max-width="100%" height="auto" src="./images/Explanations/flowchart.png"></image>
-                <div>
-                    <span class="align-text-top lead">Do you <b>trust</b> this recommendation?</span>
-                    <button id="m2YesTrust" class="btn btn-success btn-yes-no" onclick="track(this.id)">Yes</button><button id="m2NoTrsut" class="btn btn-danger btn-yes-no" onclick="track(this.id)">No</button>
-                </div>
-            </div>
-        </br>
-            
-            
-        </br>
-           
-
-            <hr class="featurette-divider">
-
-            <!--Third Movie-->
-            <div class="row featurette">
-                <div class="col-md-7">
-                    <h2 id=m3Title class="featurette-heading"></h2>
-                    <p id=m3Runtime class="lead"></p>
-                    <p id=m3Budget class="lead"></p>
-                    <p id=m3Revenue class="lead"></p>
-                    <p id=m3AvgVote class="lead"></p>
-                    <p id=m3VoteCount class="lead"></p>
-                    <p id=m3Description class="lead"></p>
-                </div>
-                <div class="col-md-5">
-                    <svg height="auto" class="float-right">
-                        <image id=m3Image class="img-fluid float-right" max-width="100%" height="auto"></image>
-                    </svg>
-                </div>
-            </div>
-            <div>
-                <span class="align-text-top lead">Was this a <b>good</b> recommendation for you?</span>
-                <button id="m3YesRecommendation" class="btn btn-success btn-yes-no" onclick="track(this.id), sendRecommendationData(this.id)">Yes</button><button id="m3NoRecommendation" class="btn btn-danger btn-yes-no" onclick="track(this.id), sendRecommendationData(this.id)">No</button>
-            </div>
-            <button id=m3ExplanationBtn class="btn btn-secondary btn-explanations-odd" onclick="track(this.id)">See Explanation</button>
-            <div id=m3Explanation class="explanation">
-                <image class="img-fluid" max-width="100%" height="auto" src="./images/Explanations/table.png"></image>
-                <image class="img-fluid" max-width="100%" height="auto" src="./images/Explanations/flowchart.png"></image>
-                <div>
-                    <span class="align-text-top lead">Do you <b>trust</b> this recommendation?</span>
-                    <button id="m3YesTrust" class="btn btn-success btn-yes-no" onclick="track(this.id)">Yes</button><button id="m3NoTrust" class="btn btn-danger btn-yes-no" onclick="track(this.id)">No</button>
-                </div>
-            </div>
+            <hr class="featurette-divider">            
         </br>
         </br>
-            
-
-            <button class="btn btn-dark btn-lg btn-block" onClick="window.location.reload();">Get More Recommendations</button>
+        <button id="m1MoreRecs" class="btn btn-dark btn-lg btn-block" onclick="load_recommendation()">Get More Recommendations</button>
     </br>
             <button id="getUserBehaviourDatabase" class="btn btn-dark btn-lg" onClick="getUserBehaviourDatabase()">Get User Behaviour</button> 
             <button id="getUserDatabase" class="btn btn-dark btn-lg" onClick="getUserDatabase()">Get Users</button> 
