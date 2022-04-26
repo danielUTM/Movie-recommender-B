@@ -103,17 +103,13 @@ app.get('/getCluster4', function(req, res) {
 });
 
 app.get('/getRecommendations', function(req, res){
-    var timeg1 = 0;
-    var timeg2 = 0;
-    var timeg3 = 0;
-    var timeg4 = 0;
-    var timeg5 = 0;
-    var group1Rating = 0;
-    var group2Rating = 0;
-    var group3Rating = 0;
-    var group4Rating = 0;
-    var group5Rating = 0;
+    var group1Ratings = [];
+    var group2Ratings = []
+    var group3Ratings = []
+    var group4Ratings = []
+    var group5Ratings = []
     var userRatings = [];
+    var avgUserRatings = [];
     db.all('SELECT * FROM users WHERE username = $user', {$user: username},(error2, resultUsers) => {
         age = resultUsers[0].age;
         gender = resultUsers[0].gender;
@@ -127,34 +123,38 @@ app.get('/getRecommendations', function(req, res){
             var reg4 = /g4/;
             var reg5 = /g5/;
             //Find the latest button from g1 movies that has been clicked
-            if (result.userId === username && result.timestamp > timeg1 && reg1.test(result.button)){
-                timeg1 = result.timestamp;
-                group1Rating = result.button.charAt(5);
+            if (result.userId === username && reg1.test(result.button)){
+                group1Ratings.push(result.button.charAt(5));
             };
             //Find the latest button from g2 movies that has been clicked
-            if (result.userId === username && result.timestamp > timeg2 && reg2.test(result.button)){
-                timeg2 = result.timestamp;
-                group2Rating = result.button.charAt(5);
+            if (result.userId === username && reg2.test(result.button)){
+                group2Ratings.push(result.button.charAt(5));
             };
             //Find the latest button from g3 movies that has been clicked
-            if (result.userId === username && result.timestamp > timeg3 && reg3.test(result.button)){
-                timeg3 = result.timestamp;
-                group3Rating = result.button.charAt(5);
+            if (result.userId === username && reg3.test(result.button)){
+                group3Ratings.push(result.button.charAt(5));
             };
             //Find the latest button from g4 movies that has been clicked
-            if (result.userId === username && result.timestamp > timeg4 && reg4.test(result.button)){
-                timeg4 = result.timestamp;
-                group4Rating = result.button.charAt(5);
+            if (result.userId === username && reg4.test(result.button)){
+                group4Ratings.push(result.button.charAt(5));
             };
             //Find the latest button from g5 movies that has been clicked
-            if (result.userId === username && result.timestamp > timeg5 && reg5.test(result.button)){
-                timeg5 = result.timestamp;
-                group5Rating = result.button.charAt(5);
+            if (result.userId === username && reg5.test(result.button)){
+                group5Ratings.push(result.button.charAt(5));
             };
             //Creates a list of all the ratings for each group
-            userRatings = [group1Rating, group2Rating, group3Rating, group4Rating, group5Rating];
 
         }, (error, numberofRows) => {
+            userRatings = [group1Ratings, group2Ratings, group3Ratings, group4Ratings, group5Ratings];
+            for (var r of userRatings) {
+                if (r.length === 0) {
+                    avgUserRatings.push(0);
+                }
+                else {
+                    avgUserRatings.push(r.reduce((a, b) => parseInt(a) + parseInt(b)) / r.length);
+                }
+                
+            }
             //Only gets called onced after all the above rows have been checked
 
             //Getting the row of the collaborative filtering table based on age
@@ -177,7 +177,7 @@ app.get('/getRecommendations', function(req, res){
             for (var i=0; i<5; i++){
                 if(numberOfRecommendations == 0){
                     //Updating Collaborative Filtering Table with user ratings
-                    collaborativeFilteringTable[row][i] = parseInt(userRatings[i]);
+                    collaborativeFilteringTable[row][i] = parseInt(avgUserRatings[i]);
                 }
                 //Keeping track of highest rated group
                 if(collaborativeFilteringTable[row][i] > highestRated){
