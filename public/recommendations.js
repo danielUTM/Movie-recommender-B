@@ -62,16 +62,12 @@ function cutDescription() {
     var cutoff = 50;
     var text = $('#m1Description').text();
     var rest = text.substring(cutoff);
-    console.log(text)
-    console.log(rest)
     if (text.length > cutoff) {
         var space = rest.indexOf(' ');
         cutoff += Math.max(space, 0);
     }
     rest = text.substring(cutoff);
-    console.log(rest)
     var visibleText = $('#m1Description').text().substring(0, cutoff);
-    console.log(visibleText)
     $('#m1Description')
         .html(visibleText + ('<span>' + rest + '</span>'))
     $('#m1Description span').hide();

@@ -56,6 +56,8 @@
                     Hello and welcome to this Movie Recommender! Below you will find a list of movies that have been recommended just for you, we hope you enjoy.
                 </p>
                 <p class="lead text-muted">Click the buttons on the webpage to interact!</p>
+                    <image class="img-fluid" max-width="100%" height="auto" src="./images/Explanations/table.png"></image>
+                    <image class="img-fluid" max-width="100%" height="auto" src="./images/Explanations/flowchart.png"></image>
             </div>
 
         </section>
@@ -81,31 +83,76 @@
                 </div>
             </div>
             <button id="m1SeeMore" class="btn btn-success btn-yes-no" onclick="moreDesc(); track(this.id)">See more</button>
-        </br>
-            <div>
-                <span class="align-text-top lead">Was this a <b>good</b> recommendation for you?</span>
-                <button id="m1YesRecommendation" class="btn btn-success btn-yes-no" onclick="track(this.id), sendRecommendationData(this.id)">Yes</button><button id="m1NoRecommendation" class="btn btn-danger btn-yes-no" onclick="track(this.id), sendRecommendationData(this.id)">No</button>
-            </div>
-        </br>
-            <button id=m1ExplanationBtn class="btn btn-secondary btn-explanations-odd" onclick="track(this.id)">See Explanation</button>
-            <div id=m1Explanation class="explanation">
-                <image class="img-fluid" max-width="100%" height="auto" src="./images/Explanations/table.png"></image>
-                <image class="img-fluid" max-width="100%" height="auto" src="./images/Explanations/flowchart.png"></image>
-            </br>
-                <div>
-                    <span class="align-text-top lead">Do you <b>trust</b> this recommendation?</span>
-                    <button id="m1YesTrust" class="btn btn-success btn-yes-no" onclick="track(this.id)">Yes</button><button id="m1NoTrust" class="btn btn-danger btn-yes-no" onclick="track(this.id)">No</button>
-                </div>
-            </div>
-        </br>
-        </br>
+
+        </br></br>
+        <!-- How much do you want to watch this movie likert scale form -->
+        <div class="wrap">
+            <form action="">
+              <label class="statement">How much do you want to watch this film (1-7)?</label>
+              <ul class='likert'>
+                <li>
+                    <input type="radio" name="likert" value="wtf1" onclick="track(this.value)">
+                    <label>Not at all</label>
+                </li>
+                <li>
+                    <input type="radio" name="likert" value="wtf2" onclick="track(this.value)">
+                </li>
+                <li>
+                    <input type="radio" name="likert" value="wtf3" onclick="track(this.value)">
+                </li>
+                <li>
+                    <input type="radio" name="likert" value="wtf4" onclick="track(this.value)">
+                </li>
+                <li>
+                    <input type="radio" name="likert" value="wtf5" onclick="track(this.value)">
+                </li>
+                <li>
+                    <input type="radio" name="likert" value="wtf6" onclick="track(this.value)">
+                </li>
+                <li>
+                    <input type="radio" name="likert" value="wtf7" onclick="track(this.value)">
+                    <label>Extremely</label>
+                </li>
+              </ul>
+            </form>
+        </div>
+
+    <!-- Is this a good recommendation for you likert scale -->
+    <div class="wrap">
+        <form action="">
+          <label class="statement">Is this a good recommendation for you (1-7)?</label>
+          <ul class='likert'>
+            <li>
+                <input type="radio" name="likert" value="gr1" onclick="track(this.value)">
+                <label>Not at all</label>
+            </li>
+            <li>
+                <input type="radio" name="likert" value="gr2" onclick="track(this.value)">
+            </li>
+            <li>
+                <input type="radio" name="likert" value="gr3" onclick="track(this.value)">
+            </li>
+            <li>
+                <input type="radio" name="likert" value="gr4" onclick="track(this.value)">
+            </li>
+            <li>
+                <input type="radio" name="likert" value="gr5" onclick="track(this.value)">
+            </li>
+            <li>
+                <input type="radio" name="likert" value="gr6" onclick="track(this.value)">
+            </li>
+            <li>
+                <input type="radio" name="likert" value="gr7" onclick="track(this.value)">
+                <label>Definitely</label>
+            </li>
+          </ul>
+        </form>
+    </div>
             <hr class="featurette-divider">            
-        </br>
-        </br>
         <button id="m1MoreRecs" class="btn btn-dark btn-lg btn-block" onclick="load_recommendation()">Get More Recommendations</button>
     </br>
-            <button id="getUserBehaviourDatabase" class="btn btn-dark btn-lg" onClick="getUserBehaviourDatabase()">Get User Behaviour</button> 
-            <button id="getUserDatabase" class="btn btn-dark btn-lg" onClick="getUserDatabase()">Get Users</button> 
+            <!-- <button id="getUserBehaviourDatabase" class="btn btn-dark btn-lg" onClick="getUserBehaviourDatabase()">Get User Behaviour</button> 
+            <button id="getUserDatabase" class="btn btn-dark btn-lg" onClick="getUserDatabase()">Get Users</button>  -->
 
         </div>
 
