@@ -2,16 +2,20 @@
 async function load_recommendation(){
     var e = 0.2;
     var randomGreedy = Math.random();
+    // get rated films
+    let ratedFilms = await getRatedFilms()
     $.get("/getRecommendations", function(result){
-        var random = Math.floor(Math.random() * (result.length));
-        while (result[random]["title"] + ' - id: ' +result[random]['id'] === $('#m1Title').text()) {
-            var random = Math.floor(Math.random() * (result.length));
-        }
-        
-        //Prints databse query to placeholder
+        // Get highest rated cluster so we don't choose random film for epsilon greedy in this
+        var cluster = result[0]["cluster"]
         //Seeing if it should explore with probability e
         // Don't Explore
-       if(randomGreedy > e){
+        if (randomGreedy > e) {
+            // Generate random number and ensure we don't get same film or rated film
+            var random = Math.floor(Math.random() * (result.length));
+            while (result[random]["title"] + ' - id: ' +result[random]['id'] === $('#m1Title').text() || ratedFilms.includes(result[random]['id'])) {
+                var random = Math.floor(Math.random() * (result.length));
+            }
+            
             //Movie 1 Data
             $('#m1Title').html(result[random]["title"] + ' - id: ' +result[random]['id']);
             $('#m1Runtime').html( 'Runtime '+ result[random]["runtime"]+' mins');
@@ -31,9 +35,18 @@ async function load_recommendation(){
             $('#m1Image').attr("href", result[random]["imageURL"]);
             cutDescription();
         // Explore
-       }
-       else {
-           $.get('/getAllMovies', function(result){
+       } else {
+        $.get('/getAllMovies', function(result){
+            // Generate random number and ensure we don't get same film or rated film
+            var random = Math.floor(Math.random() * (result.length));
+            while (
+                    result[random]["title"] + ' - id: ' + result[random]['id'] === $('#m1Title').text() 
+                    || ratedFilms.includes(result[random]['id'])
+                    || result[random]["cluster"] === cluster
+            ) {
+                 var random = Math.floor(Math.random() * (result.length));
+             }
+
                 //Movie 1 Data
                 $('#m1Title').html(result[random]["title"] + ' - id: ' +result[random]['id']);
                 $('#m1Runtime').html( 'Runtime '+ result[random]["runtime"]+' mins');
@@ -76,6 +89,27 @@ function cutDescription() {
 window.addEventListener('load', async function (event) {
     load_recommendation();
 });
+
+// Get a list of ids of all the films the current user has rated
+async function getRatedFilms () {
+    // pass through username
+    let username = sessionStorage.getItem("username")
+    // regex
+    var searchPattern = new RegExp("^g[1-5]");
+    ratedFilms = []
+
+    const resultReq = await fetch('/getUserBehaviour')
+    let result = await resultReq.json();
+    for (const i of result) {
+            if (i["userId"] === username & searchPattern.test(i["button"])) {
+                firstM = i["button"].indexOf("m") + 1;
+                ratedFilms.push(parseInt(i["button"].substring(firstM, i["button"].length)))
+        }
+    }
+    
+    return ratedFilms;
+}
+
 
 //Buttons to see explanations for movies
 $(function(){
