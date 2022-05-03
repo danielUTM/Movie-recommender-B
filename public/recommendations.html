@@ -87,7 +87,7 @@
         </br></br>
         <!-- How much do you want to watch this movie likert scale form -->
         <div class="wrap">
-            <form action="">
+            <form action="" id="wtfForm">
               <label class="statement">How much do you want to watch this film (1-7)?</label>
               <ul class='likert'>
                 <li>
@@ -119,7 +119,7 @@
 
     <!-- Is this a good recommendation for you likert scale -->
     <div class="wrap">
-        <form action="">
+        <form action="" id="grForm">
           <label class="statement">Is this a good recommendation for you (1-7)?</label>
           <ul class='likert'>
             <li>
@@ -149,7 +149,7 @@
         </form>
     </div>
             <hr class="featurette-divider">            
-        <button id="m1MoreRecs" class="btn btn-dark btn-lg btn-block" onclick="load_recommendation()">Get More Recommendations</button>
+            <button id="m1MoreRecs" class="btn btn-dark btn-lg btn-block" onclick="load_recommendation(); track(this.id)">Get More Recommendations</button>
     </br>
             <!-- <button id="getUserBehaviourDatabase" class="btn btn-dark btn-lg" onClick="getUserBehaviourDatabase()">Get User Behaviour</button> 
             <button id="getUserDatabase" class="btn btn-dark btn-lg" onClick="getUserDatabase()">Get Users</button>  -->

@@ -227,7 +227,7 @@
                 </br>
 
                 <button id=g1next class="btn btn-secondary btn-next btn-lg">Next</button>
-                <button id=g1complete class="btn btn-secondary" type='button' style="display: none" value='Get Recommendations' onClick="window.location= './recommendations.html'">Get Recommendations</button>
+                <button id=g1complete class="btn btn-secondary" type='button' style="display: none" value='Get Recommendations' onClick="goToRecs()">Get Recommendations</button>
 
                 </br>
             </div>
@@ -317,7 +317,7 @@
                 </br>
 
                 <button id=g2next class="btn btn-secondary btn-next btn-lg">Next</button>
-                <button id=g2complete class="btn btn-secondary" type='button' style="display: none" value='Get Recommendations' onClick="window.location= './recommendations.html'">Get Recommendations</button>
+                <button id=g2complete class="btn btn-secondary" type='button' style="display: none" value='Get Recommendations' onClick="goToRecs()">Get Recommendations</button>
 
             </div> 
 
@@ -407,7 +407,7 @@
                 </br>
 
                 <button id=g3next class="btn btn-secondary btn-next btn-lg">Next</button>
-                <button id=g3complete class="btn btn-secondary" type='button' style="display: none" value='Get Recommendations' onClick="window.location= './recommendations.html'">Get Recommendations</button>
+                <button id=g3complete class="btn btn-secondary" type='button' style="display: none" value='Get Recommendations' onClick="goToRecs()">Get Recommendations</button>
 
             </div>
 
@@ -497,7 +497,7 @@
                 </br>
 
                 <button id=g4next class="btn btn-secondary btn-next btn-lg">Next</button>
-                <button id=g4complete class="btn btn-secondary" type='button' style="display: none" value='Get Recommendations' onClick="window.location= './recommendations.html'">Get Recommendations</button>
+                <button id=g4complete class="btn btn-secondary" type='button' style="display: none" value='Get Recommendations' onClick="goToRecs()">Get Recommendations</button>
 
             </div>
             
@@ -612,64 +612,53 @@
             var visited_groups = [];
 
             //Logging in function
-            function login(e){
-                e.preventDefault();
-                var username = $('#usernameLogin').val();
-                $.post("./login", {
-                    username: username,
-                }, function(result){
-                    if(result === "Not a valid user, please sign up"){
-                        console.log(result);
-                        $('#loginText').html(result);
-                    }else{
-                        //Hides Login and sign up form
-                        track("login");
-                        document.getElementById("loginForm").style.display = "none";
-                        document.getElementById("signupForm").style.display = "none";
-                        //Shows random movie group
-                        var index_of = Math.floor(Math.random() * unvisited_groups.length);
-                        var to_go = unvisited_groups.splice(index_of, 1);
-                        visited_groups.push(to_go);
-                        document.getElementsByClassName("group-"+ to_go + "-movies")[0].style.display = "inline-block";
-                        //Changes jumbotron text
-                        $('#jumbotronText').html("Please rate one movie below by clicking on the stars, and then click 'Next'. If you don't recognise any of the movies, just click 'Next'");
-                        //Shows progress bar
-                        document.getElementsByClassName("progress")[0].style.display="flex";
-                    }
-                });
-            };
+            // function login(e){
+            //     e.preventDefault();
+            //     var username = $('#usernameLogin').val();
+            //     $.post("./login", {
+            //         username: username,
+            //     }, function(result){
+            //         if(result === "Not a valid user, please sign up"){
+            //             console.log(result);
+            //             $('#loginText').html(result);
+            //         }else{
+            //             //Hides Login and sign up form
+            //             track("login");
+            //             document.getElementById("loginForm").style.display = "none";
+            //             document.getElementById("signupForm").style.display = "none";
+            //             //Shows random movie group
+            //             var index_of = Math.floor(Math.random() * unvisited_groups.length);
+            //             var to_go = unvisited_groups.splice(index_of, 1);
+            //             visited_groups.push(to_go);
+            //             document.getElementsByClassName("group-"+ to_go + "-movies")[0].style.display = "inline-block";
+            //             //Changes jumbotron text
+            //             $('#jumbotronText').html("Please rate one movie below by clicking on the stars, and then click 'Next'. If you don't recognise any of the movies, just click 'Next'");
+            //             //Shows progress bar
+            //             document.getElementsByClassName("progress")[0].style.display="flex";
+            //         }
+            //     });
+            // };
 
             //Sign up function
-            function signUp(e){
-                e.preventDefault();
+            // function signUp(){
+            $(function(){
+                // Get all users, find highest id then increment by 1
+                $.get("/getUsers", function(result) {
+                // e.preventDefault();
                 //Getting the username
-                var username = $("#usernameSignUp").val();
-                //Getting the gender
-                var gender;
-                if(document.getElementById('female').checked == true){
-                    gender = document.getElementById('female').value;
-                }else if(document.getElementById('male').checked == true){
-                    gender = document.getElementById('male').value;
+                var username = 0;
+                for (var i of result) {
+                    tempUsername = parseInt(i["username"])
+                    if (tempUsername > username) {
+                        username = tempUsername
+                    }
                 }
-                //Getting the age
-                var age;
-                if(document.getElementById('18-29').checked == true){
-                    age = document.getElementById('18-29').value;
-                }else if(document.getElementById('30-44').checked == true){
-                    age = document.getElementById('30-44').value;
-                }else if(document.getElementById('45+').checked == true){
-                    age = document.getElementById('45+').value;
-                }
+                username++;
 
                 //Sign up post function
                 $.post("./signup", {
                     username: username,
-                    gender: gender,
-                    age: age,
                 }, function(result){
-                    if(result === "User already exists, please login or sign up using a different username"){
-                        $('#signupText').html(result);
-                    }else{
                         track("login");
                         //Hides Login and sign up form
                         document.getElementById("loginForm").style.display = "none";
@@ -683,14 +672,13 @@
                         $('#jumbotronText').html("Please rate one movie below by clicking on the stars, and then click 'Next'. If you don't recognise any of the movies, just click 'Next'");
                         //Shows progress bar
                         document.getElementsByClassName("progress")[0].style.display="flex";
-                    }
                 })
-            }
+            })
+        })
 
 
-
-            $('#loginForm').on('submit', login);
-            $('#signupForm').on('submit', signUp);
+            // $('#loginForm').on('submit', login);
+            // $('#signupForm').on('submit', signUp);
 
             //Populate Movies
             $(function(){
@@ -1575,9 +1563,17 @@
 
             // go to recs page
             function goToRecs() {
-                var username = $('#usernameLogin').val();
-                sessionStorage.setItem("username", username);
-                window.location.assign('./recommendations.html')
+                $.get("/getUsers", function(result) {
+                    //Getting the username
+                    var username = 0;
+                    for (var i of result) {
+                        tempUsername = parseInt(i["username"])
+                        if (tempUsername > username) {
+                            username = tempUsername
+                        }
+                    }
+                    window.location.href = './recommendations.html#' + username;
+                })
             }
 
             //track user behaviour

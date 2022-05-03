@@ -37,6 +37,7 @@ async function load_recommendation(){
         // Explore
        } else {
         $.get('/getAllMovies', function(result){
+            console.log("explore")
             // Generate random number and ensure we don't get same film or rated film
             var random = Math.floor(Math.random() * (result.length));
             while (
@@ -67,6 +68,11 @@ async function load_recommendation(){
                 cutDescription();
            })
        }
+
+       // Reset Likert scale
+       document.getElementById("grForm").reset();
+       document.getElementById("wtfForm").reset();
+
     });
 };
 
@@ -92,8 +98,8 @@ window.addEventListener('load', async function (event) {
 
 // Get a list of ids of all the films the current user has rated
 async function getRatedFilms () {
-    // pass through username
-    let username = sessionStorage.getItem("username")
+    var username = window.location.hash.substring(1)
+    username = parseInt(username)
     // regex
     var searchPattern = new RegExp("^g[1-5]");
     ratedFilms = []
