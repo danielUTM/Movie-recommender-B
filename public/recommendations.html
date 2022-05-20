@@ -56,6 +56,7 @@
                     Hello and welcome to this Movie Recommender! Below you will find a list of movies that have been recommended just for you, we hope you enjoy.
                 </p>
                 <p class="lead text-muted">Click the buttons on the webpage to interact!</p>
+                <p class="lead text"><b>The figure below explains how your recommendations are generated</b></p>
                     <image class="img-fluid" max-width="100%" height="auto" src="./images/Explanations/table.png"></image>
                     <image class="img-fluid" max-width="100%" height="auto" src="./images/Explanations/flowchart.png"></image>
             </div>
@@ -175,12 +176,10 @@
         <script>
             //track user behaviour
             function track(id) {
-                date = new Date();
                 //sends data to database
                 $.post("/postUserBehaviour", 
                     {
                         button: id, 
-                        timestamp: date.getTime()
                     });
                 };
             
