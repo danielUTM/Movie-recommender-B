@@ -13,17 +13,17 @@ var bodyParser = require('body-parser');
 // });
 
 const { Pool } = require('pg');
-let db = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false
-  }
-});
-// const db = new Pool({
-//     host: "localhost",
-//     database: 'dbanme',
-//     port: 5432,
-//   })
+// let db = new Pool({
+//   connectionString: process.env.DATABASE_URL,
+//   ssl: {
+//     rejectUnauthorized: false
+//   }
+// });
+const db = new Pool({
+    host: "localhost",
+    database: 'danielcampbell',
+    port: 5432,
+  })
 const { response } = require('express');
 
 var collaborativeFilteringTable = [
@@ -117,8 +117,9 @@ app.get('/getCluster4', function(req, res) {
         res.send(result.rows);
     });  
 });
-app.get('/getRecommendations', function(req, res){
-    username = parseInt(username)
+
+app.get('/getRecommendations/:id', function(req, res){
+    const username = parseInt(req.params.id);
     var group1Ratings = [];
     var group2Ratings = []
     var group3Ratings = []
@@ -172,14 +173,18 @@ app.get('/getRecommendations', function(req, res){
             //Find the highest rated group & updating table
             var highestRated = 0;
             for (var i=0; i<5; i++){
-                if(numberOfRecommendations == 0){
-                    //Updating Collaborative Filtering Table with user ratings
-                    collaborativeFilteringTable[row][i] = parseInt(avgUserRatings[i]);
-                }
-                //Keeping track of highest rated group
-                if(collaborativeFilteringTable[row][i] > highestRated){
-                    highestRated = collaborativeFilteringTable[row][i];
-                    highestRatedIndex = i;
+                // if(numberOfRecommendations == 0){
+                //     //Updating Collaborative Filtering Table with user ratings
+                //     collaborativeFilteringTable[row][i] = parseInt(avgUserRatings[i]);
+                // }
+                // //Keeping track of highest rated group
+                // if(collaborativeFilteringTable[row][i] > highestRated){
+                //     highestRated = collaborativeFilteringTable[row][i];
+                //     highestRatedIndex = i;
+                // }
+                if (avgUserRatings[i] > highestRated) {
+                    highestRated = avgUserRatings[i]
+                    highestRatedIndex = i
                 }
             }
         
@@ -213,6 +218,91 @@ app.get('/getRecommendations', function(req, res){
             numberOfRecommendations++;
         })
     });
+
+app.get('/getHighestRated/:id', function(req, res){
+    const username = parseInt(req.params.id);
+    var group1Ratings = [];
+    var group2Ratings = []
+    var group3Ratings = []
+    var group4Ratings = []
+    var group5Ratings = []
+    var userRatings = [];
+    var avgUserRatings = [];
+    const statement = 'SELECT * FROM user_behaviour';
+    db.query(statement, (error, result) => {
+        result = result.rows
+        //Regex expressions to match the buttons
+        var reg1 = /g1/;
+        var reg2 = /g2/;
+        var reg3 = /g3/;
+        var reg4 = /g4/;
+        var reg5 = /g5/;
+        for (const i of result) {
+            //Find the latest button from g1 movies that has been clicked
+            if (i["userId"] === username && reg1.test(i["button"])){
+                group1Ratings.push(i["button"].charAt(3));
+            };
+            //Find the latest button from g2 movies that has been clicked
+            if (i["userId"] === username && reg2.test(i["button"])){
+                group2Ratings.push(i["button"].charAt(3));
+            };
+            //Find the latest button from g3 movies that has been clicked
+            if (i["userId"] === username && reg3.test(i["button"])){
+                    group3Ratings.push(i["button"].charAt(3));
+                };
+                //Find the latest button from g4 movies that has been clicked
+                if (i["userId"]=== username && reg4.test(i["button"])){
+                    group4Ratings.push(i["button"].charAt(3));
+                };
+                //Find the latest button from g5 movies that has been clicked
+                if (i["userId"] === username && reg5.test(i["button"])){
+                    group5Ratings.push(i["button"].charAt(3));
+                };
+            }
+            //Creates a list of all the ratings for each group
+        userRatings = [group1Ratings, group2Ratings, group3Ratings, group4Ratings, group5Ratings];
+        for (var r of userRatings) {
+                if (r.length === 0) {
+                    avgUserRatings.push(0);
+                }
+                else {
+                    avgUserRatings.push(r.reduce((a, b) => parseInt(a) + parseInt(b)) / r.length);
+                }
+        }
+        //Only gets called onced after all the above rows have been checked
+            
+        //Find the highest rated group & updating table
+        var highestRated = 0;
+        for (var i=0; i<5; i++){
+            // if(numberOfRecommendations == 0){
+            //     //Updating Collaborative Filtering Table with user ratings
+            //     collaborativeFilteringTable[row][i] = parseInt(avgUserRatings[i]);
+            // }
+            // //Keeping track of highest rated group
+            // if(collaborativeFilteringTable[row][i] > highestRated){
+            //     highestRated = collaborativeFilteringTable[row][i];
+            //     highestRatedIndex = i;
+            // }
+            if (avgUserRatings[i] > highestRated) {
+                highestRated = avgUserRatings[i]
+                highestRatedIndex = i
+            }
+        }
+
+        const output = {
+            data: []
+          };
+
+        output.data.push({
+            cluster: highestRatedIndex,
+            rating: highestRated
+        });
+        res.writeHead(200, {
+            'Content-Type': 'application/json'
+          });
+        res.end(JSON.stringify(output));
+    })
+});
 
 //POST request to get data on what the user rated the recommendations
 app.post('/postRecommendationData', function(req, res){
@@ -381,6 +471,13 @@ app.post('/signup', function(req, res){
     })
     
 })
+
+app.get('/getPreviousExplanations', function(req, res){
+    db.query('SELECT * FROM user_behaviour WHERE button like \'e%\' ORDER BY timestamp DESC;', (error, result) => {
+        res.send(result.rows);
+    })
+
+});
 
 
 
