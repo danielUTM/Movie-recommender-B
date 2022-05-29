@@ -214,11 +214,6 @@ function cutDescription() {
     $('#m1Description span').hide();
 }
 
-window.addEventListener('load', async function (event) {
-    getExplanationType();
-    load_recommendation();
-});
-
 // Get a list of ids of all the films the current user has rated
 async function getRatedFilms () {
     var username = window.location.hash.substring(1)
@@ -281,6 +276,7 @@ function getUserDatabase(){
     })
 }
 
+// Show/Hide description
 function moreDesc() {
     $('#m1Description').find('span').toggle();
     $('#m1Description').find('a:last').hide();
@@ -289,11 +285,29 @@ function moreDesc() {
     }) 
 }
 
+// Load page
+window.addEventListener('load', async function () {
+    getExplanationType();
+    load_recommendation();
+
+    const tqButtonClick = document.getElementById('tqButton');
+    tqButtonClick.addEventListener('click', async function () {
+        const trackComplete = await track("tq"); 
+        if (trackComplete) {
+            location.href='https://google.com'
+        }
+        
+    });
+});
+
+
+
 //track user behaviour
-function track(id) {
+async function track(id) {
     //sends data to database
-    $.post("/postUserBehaviour", 
+    await $.post("/postUserBehaviour", 
         {
             button: id, 
         });
+    return 1
     };

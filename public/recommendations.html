@@ -140,10 +140,28 @@
     </div>
             <hr class="featurette-divider">            
             <button id="m1MoreRecs" class="btn btn-dark btn-lg btn-block" onclick="track(this.id); load_recommendation()">Get More Recommendations</button>
-    </br>
-            <!-- <button id="getUserBehaviourDatabase" class="btn btn-dark btn-lg" onClick="getUserBehaviourDatabase()">Get User Behaviour</button> 
-            <button id="getUserDatabase" class="btn btn-dark btn-lg" onClick="getUserDatabase()">Get Users</button>  -->
-
+            <p class="lead text text-align: center" style="text-align:center"><b>OR</b></p>
+            <button id="tq" class="btn btn-dark btn-lg btn-block" data-toggle="modal" data-target="#tqModal">Complete the Trust Questionnaire</button>
+            <!-- Trust Questionarre Modal -->
+            <div class="modal fade" id="tqModal" tabindex="-1" role="dialog" aria-labelledby="tqModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="tqModalLabel">Trust Questionnaire</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to complete the trust questionnaire now? Once you click “Yes” you will not be able to view more movie recommendations
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                      <button id="tqButton" type="button" class="btn btn-primary">Yes</button>
+                    </div>
+                  </div>
+                </div>
+            </div>
         </div>
 
           <!--Footer-->
