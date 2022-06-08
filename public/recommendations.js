@@ -333,7 +333,7 @@ window.addEventListener('load', async function () {
     tqButtonClick.addEventListener('click', async function () {
         const trackComplete = await track("tq"); 
         if (trackComplete) {
-            location.href='https://google.com'
+            location.href= "https://durham.onlinesurveys.ac.uk/trust-in-recommendation-systems"
         }
         
     });
