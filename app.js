@@ -13,17 +13,19 @@ var bodyParser = require('body-parser');
 // });
 
 const { Pool } = require('pg');
-// let db = new Pool({
-//   connectionString: process.env.DATABASE_URL,
-//   ssl: {
-//     rejectUnauthorized: false
-//   }
-// });
-const db = new Pool({
-    host: "localhost",
-    database: 'danielcampbell',
-    port: 5432,
-  })
+// Heroku db connection
+let db = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false
+  }
+});
+// Local db connection
+// const db = new Pool({
+//     host: "localhost",
+//     database: 'db',
+//     port: 5432,
+//   })
 const { response } = require('express');
 
 var collaborativeFilteringTable = [
