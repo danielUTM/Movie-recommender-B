@@ -13,17 +13,17 @@ var bodyParser = require('body-parser');
 // });
 
 const { Pool } = require('pg');
-let db = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false
-  }
-});
-// const db = new Pool({
-//     host: "localhost",
-//     database: 'db',
-//     port: 5432,
-//   })
+// let db = new Pool({
+//   connectionString: process.env.DATABASE_URL,
+//   ssl: {
+//     rejectUnauthorized: false
+//   }
+// });
+const db = new Pool({
+    host: "localhost",
+    database: 'danielcampbell',
+    port: 5432,
+  })
 const { response } = require('express');
 
 var collaborativeFilteringTable = [
@@ -81,6 +81,15 @@ app.get('/getAllMovies', function(req, res) {
     db.query('SELECT * FROM all_movies', (error, result) => {
         res.send(result.rows);
     });  
+});
+
+app.get('/getMovieByID/:id', function(req, res) {
+    const id = parseInt(req.params.id);
+    const statement = 'SELECT * FROM all_movies AS am WHERE am.id = $1;'
+    const values = [id];
+    db.query(statement, values, (error, result) => {
+        res.send(result.rows);
+    })
 });
 
 //GET Request for cluster 0
@@ -345,6 +354,21 @@ app.get('/getRatings', function(req, res){
     }
 })
 
+app.get('/getRatingsByUserAndCluster/:user/:cluster', function(req, res){
+    const user = parseInt(req.params.user);
+    const cluster = req.params.cluster;
+    const statement = 'SELECT * FROM user_behaviour;'
+    db.query(statement, (error, result) => {
+        var userRated = []
+        for (const i of result.rows) {
+            if (i["userId"] === user && i["button"].substring(0,2) === "g" + cluster) {
+                userRated.push(i["button"])
+            }
+        }
+        res.send(userRated);
+    })
+})
+
 //GET request to get gender and age of user
 app.get('/userAgeAndGender', function(req, res){
     db.query('SELECT * FROM users WHERE username = $user', {$user: username},(error2, resultUsers) => {
@@ -478,6 +502,15 @@ app.get('/getPreviousExplanations', function(req, res){
     })
 
 });
+
+app.get('/getHighestRatedSimilarity/:cluster', function(req, res){
+    const cluster = parseInt(req.params.cluster);
+    const statement = 'SELECT * FROM movie_similarity AS ms WHERE ms.cluster = $1;'
+    const values = [cluster];
+    db.query(statement, values, (error, result) => {
+        res.send(result.rows);
+    })
+})
 
 
 

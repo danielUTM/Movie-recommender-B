@@ -4,8 +4,8 @@ async function getExplanationType(){
     // e1 - placebo explanation
     // e2 - flowchart
     // e3 - feature importance
-    // e4 - item-based
-    // e5 - dunno
+    // e4 - average group rating
+    // e5 - film similarity
     var username = window.location.hash.substring(1)
     username = parseInt(username)
     $.get("/getPreviousExplanations", function(result){
@@ -114,7 +114,39 @@ async function loadExplanation4(){
 }
 
 async function loadExplanation5(){
-    return;
+    var username = window.location.hash.substring(1)
+    username = parseInt(username)
+    $.get("/getHighestRated/" + username, function(result){
+        var cluster = parseInt(result.data[0].cluster)
+        var group = cluster + 1
+
+        $.get("/getHighestRatedSimilarity/" + cluster, function(similarity){
+                var rec_film = $('#m1Title').html()
+                rec_film = parseInt((rec_film.substring(rec_film.indexOf("id:") + 4)))
+
+                var hiRatingID = 0;
+                $.get("/getRatingsByUserAndCluster/" + username + "/" + group, function(ratings){
+                    for (var i = 5; i >= 1; i--) {
+                        for (var j of ratings) {
+                            if (parseInt(j.substring(3,4)) == i) {
+                                hiRatingID = j.substring(5)
+                            }
+                        }
+                    }
+                    // You are receiving the below recommendation because it has a similarity rating of 0.867 with the film you rated highly previously, FILM TITLE.
+                    for (var i of similarity) {
+                        if ((i["movie1_id"] == hiRatingID && i["movie2_id"] == rec_film) | (i["movie1_id"] == rec_film && i["movie2_id"] == hiRatingID)){
+                            $.get("/getMovieByID/" + hiRatingID, function(result){
+                                var explanationText = document.getElementById("explanationText");
+                                explanationText.innerHTML = "<b>You are receiving the below recommendation because it has a similarity rating of " + i["similarity"] + " with the movie you rated previously, " + result[0]["title"] + ".</b>";
+                                return;
+                            })
+                            break; 
+                        }
+                    }
+                })
+            })
+    })
 }
 
 //Populates the movies
@@ -139,19 +171,6 @@ async function load_recommendation(){
             
             //Movie 1 Data
             $('#m1Title').html(result[random]["title"] + ' - id: ' +result[random]['id']);
-            $('#m1Runtime').html( 'Runtime '+ result[random]["runtime"]+' mins');
-            if(result[random]["budget"] == 0){
-                $('#m1Budget').html('Budget: Unknown');
-            }else{
-                $('#m1Budget').html('Budget: ' + result[1]["budget"]);
-            }
-            if(result[random]["revenue"] == 0){
-                $('#m1Revenue').html('Revenue: Unknown');
-            }else{
-                $('#m1Revenue').html('Revenue: ' + result[random]["revenue"]);
-            }
-            $('#m1AvgVote').html( 'Average Rating: ' + result[random]["vote_average"] + '/10');
-            $('#m1VoteCount').html('Number of Ratings: ' + result[random]["vote_count"]);
             $('#m1Description').html(result[random]["description"]);
             $('#m1Image').attr("href", result[random]["imageURL"]);
             cutDescription();
@@ -172,22 +191,11 @@ async function load_recommendation(){
 
                 //Movie 1 Data
                 $('#m1Title').html(result[random]["title"] + ' - id: ' +result[random]['id']);
-                $('#m1Runtime').html( 'Runtime '+ result[random]["runtime"]+' mins');
-                if(result[random]["budget"] == 0){
-                    $('#m1Budget').html('Budget: Unknown');
-                }else{
-                    $('#m1Budget').html('Budget: ' + result[random]["budget"]);
-                }
-                if(result[random]["revenue"] == 0){
-                    $('#m1Revenue').html('Revenue: Unknown');
-                }else{
-                    $('#m1Revenue').html('Revenue: ' + result[random]["revenue"]);
-                }
-                $('#m1AvgVote').html( 'Average Rating: ' + result[random]["vote_average"] + '/10');
-                $('#m1VoteCount').html('Number of Ratings: ' + result[random]["vote_count"]);
                 $('#m1Description').html(result[random]["description"]);
                 $('#m1Image').attr("href", result[random]["imageURL"]);
                 cutDescription();
+                var explanationText = document.getElementById("explanationText");
+                explanationText.innerHTML = "<b>You are receiving the below recommendation to allow you to explore something different.</b>"
            })
        }
 
@@ -287,8 +295,11 @@ function moreDesc() {
 
 // Load page
 window.addEventListener('load', async function () {
-    getExplanationType();
     load_recommendation();
+    if (explanationText.innerHTML != "<b>You are receiving the below recommendation to allow you to explore something different.</b>") {
+        getExplanationType();
+    }
+    
 
     const tqButtonClick = document.getElementById('tqButton');
     tqButtonClick.addEventListener('click', async function () {
