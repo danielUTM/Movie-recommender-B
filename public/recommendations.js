@@ -219,6 +219,7 @@ async function load_recommendation(){
             $('#m1Title').html(result[random]["title"] + ' - id: ' +result[random]['id']);
             $('#m1Description').html(result[random]["description"]);
             $('#m1Image').attr("href", result[random]["imageURL"]);
+            track("fs" + result[random]['id'])
             cutDescription();
         // Explore
        } else {
@@ -240,6 +241,7 @@ async function load_recommendation(){
                 $('#m1Title').html(result[random]["title"] + ' - id: ' +result[random]['id']);
                 $('#m1Description').html(result[random]["description"]);
                 $('#m1Image').attr("href", result[random]["imageURL"]);
+                track("fs" + result[random]['id'])
                 cutDescription();
            })
        }
@@ -340,6 +342,9 @@ function moreDesc() {
     $('#m1Description').find('span').toggle();
     $('#m1Description').find('a:last').hide();
     $('#m1SeeMore').text(function(i, text){
+        if (text != "See Less") {
+            track("m1SeeMore")
+        }
         return text === "See Less" ? "See More" : "See Less";
     }) 
 }
