@@ -356,6 +356,21 @@ app.get('/getRatings', function(req, res){
     }
 })
 
+app.get('/getRatingsByUser/:user', function(req, res){
+    const user = parseInt(req.params.user);
+    const statement = 'SELECT * FROM user_behaviour;'
+    var reg = /^g\d{1}[^]*/
+    db.query(statement, (error, result) => {
+        var userRated = []
+        for (const i of result.rows) {
+            if (i["userId"] === user && reg.test(i["button"])) {
+                userRated.push(i["button"])
+            }
+        }
+        res.send(userRated);
+    })
+})
+
 app.get('/getRatingsByUserAndCluster/:user/:cluster', function(req, res){
     const user = parseInt(req.params.user);
     const cluster = req.params.cluster;

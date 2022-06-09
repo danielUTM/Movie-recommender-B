@@ -110,21 +110,39 @@ async function loadExplanation3(){
 async function loadExplanation4(){
     var username = window.location.hash.substring(1)
     username = parseInt(username)
-    $.get("/getHighestRated/" + username, function(result){
-        const cluster = result.data[0].cluster
-        const rating = result.data[0].rating
-        var explanationText = document.getElementById("explanationText");
-        explanationText.innerHTML = "<b>You are receiving the below recommendation because you have an average rating of " + String(rating) + " for the group that this film belongs to (group " + String(cluster) + ").</b>";
-        return;
+
+    $.get("/getRatingsByUser/" + username, function(result){
+        if (result.length == 0) {
+            var explanationText = document.getElementById("explanationText");
+            explanationText.innerHTML = "<b>An explanation cannot be generated for the below recommendation as you did not provide any ratings.</b>";
+            return;
+        }
+        else {
+            $.get("/getHighestRated/" + username, function(result){
+                const cluster = result.data[0].cluster
+                const rating = result.data[0].rating
+                var explanationText = document.getElementById("explanationText");
+                explanationText.innerHTML = "<b>You are receiving the below recommendation because you have an average rating of " + String(rating) + " for the group that this film belongs to (group " + String(cluster) + ").</b>";
+                return;
+            })
+        }
     })
 }
 
 async function loadExplanation5(){
     var username = window.location.hash.substring(1)
     username = parseInt(username)
-    $.get("/getHighestRated/" + username, function(result){
+    $.get("/getHighestRated/" + username, async function(result){
         var cluster = parseInt(result.data[0].cluster)
         var group = cluster + 1
+
+        $.get("/getRatingsByUser/" + username, function(userRatings){
+            if (userRatings.length == 0) {
+                var explanationText = document.getElementById("explanationText");
+                explanationText.innerHTML = "<b>An explanation cannot be generated for the below recommendation as you did not provide any ratings.</b>";
+                return;
+            }
+        })
 
         $.get("/getHighestRatedSimilarity/" + cluster, function(similarity){
                 var rec_film = $('#m1Title').html()
@@ -143,8 +161,9 @@ async function loadExplanation5(){
                     for (var i of similarity) {
                         if ((i["movie1_id"] == hiRatingID && i["movie2_id"] == rec_film) | (i["movie1_id"] == rec_film && i["movie2_id"] == hiRatingID)){
                             $.get("/getMovieByID/" + hiRatingID, function(result){
+                                var percentSimilarity = (i["similarity"] * 100).toFixed(3)
                                 var explanationText = document.getElementById("explanationText");
-                                explanationText.innerHTML = "<b>You are receiving the below recommendation because it has a similarity rating of " + i["similarity"] + " with the movie you rated previously, " + result[0]["title"] + ".</b>";
+                                explanationText.innerHTML = "<b>You are receiving the below recommendation because it has a similarity rating of " + percentSimilarity  + "% with the movie you rated previously, " + result[0]["title"] + ".</b>";
                                 return;
                             })
                             break; 
