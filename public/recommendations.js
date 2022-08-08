@@ -84,7 +84,7 @@ async function loadExplanation2(){
 
 async function loadExplanation3(){
     var explanationText = document.getElementById("explanationText");
-    explanationText.innerHTML = "<b>The figure below shows the importance of the features of the film in making this recommendation.</b>";
+    explanationText.innerHTML = "<b>The figure below shows the importance of the features of the film in making your recommendations.</b>";
     importanceImg = document.getElementById("importanceImg")
     if (importanceImg) {
         return;
@@ -122,7 +122,7 @@ async function loadExplanation4(){
                 const cluster = result.data[0].cluster
                 const rating = result.data[0].rating
                 var explanationText = document.getElementById("explanationText");
-                explanationText.innerHTML = "<b>You are receiving the below recommendation because you have an average rating of " + String(rating) + " for the group that this film belongs to (group " + String(cluster) + ").</b>";
+                explanationText.innerHTML = "<b>You are receiving the below recommendation because this movie is from your highest rated movie group  (average rating: " + String(rating) + ").</b>";
                 return;
             })
         }
@@ -163,7 +163,7 @@ async function loadExplanation5(){
                             $.get("/getMovieByID/" + hiRatingID, function(result){
                                 var percentSimilarity = (i["similarity"] * 100).toFixed(3)
                                 var explanationText = document.getElementById("explanationText");
-                                explanationText.innerHTML = "<b>You are receiving the below recommendation because it has a similarity rating of " + percentSimilarity  + "% with the movie you rated previously, " + result[0]["title"] + ".</b>";
+                                explanationText.innerHTML = "<b>You are receiving the below recommendation because it is " + percentSimilarity  + "% similar to the movie you rated highest previously, " + result[0]["title"] + ".</b>";
                                 return;
                             })
                             break; 
